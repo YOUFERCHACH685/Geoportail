@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Basic -->
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <!-- Site Metas -->
+  <title>Géoportail du Maroc</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <!-- -------------------------j'ai inséré ici ------------------- -->
+  <script type="text/javascript"  charset="UTF-8"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.min.js"></script>
+  
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ==" crossorigin=""/>
+   <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw==" crossorigin=""></script>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.2.3/leaflet.draw.css"/>
+
+   
+   <!-- load plugin navigate bar -->
+    <link rel="stylesheet" href="3djs/Leaflet.NavBar.css" />
+    <script src="3djs/Leaflet.NavBar.js"></script>
+
+    <!-- load plugin full screen -->
+    <link rel="stylesheet" href="3djs/Control.FullScreen.css" />
+    <script src="3djs/Control.FullScreen.js"></script>
+
+    <!-- load plugin ruler -->
+  <link rel="stylesheet" href="3djs/leaflet-ruler.css" />
+  <script src="3djs/leaflet-ruler.js"></script>
+  <!-- load plugin minimap -->
+  <link rel="stylesheet" href="Nord_afrique/src/Control.MiniMap.css" />
+  <script src="Nord_afrique/src/Control.MiniMap.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+  <!-- load plugin scale bar -->
+  <link rel="stylesheet" href="Nord_afrique/L.Control.BetterScale.css" />
+  <script src="Nord_afrique/L.Control.BetterScale.js"></script>
+  <!-- load plugin control mouse -->
+  <link rel="stylesheet" href="Nord_afrique/L.Control.MousePosition.css" />
+  <script src="Nord_afrique/L.Control.MousePosition.js"></script>
+  <!-- layer group -->
+  <link rel="stylesheet" href="Nord_afrique/styledLayerControl.css" />
+  <script src="Nord_afrique/styledLayerControl.js"></script>
+
+
+  <style>
+    #map {
+      width: 900px;
+      height: 600px;
+      margin-bottom: 10px;
+    }
+    
+
+    .info {
+        padding: 6px 8px;
+        font: 14px/16px Arial, Helvetica, sans-serif;
+        background: white;
+        background: rgba(255,255,255,0.8);
+        box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        border-radius: 5px;
+           
+    }
+    .info h4 {
+        margin: 0 0 5px;
+        color: #777;
+    }
+    .legend {
+    line-height: 22px;
+    color: #555;
+     
+}
+.legend i {
+    width: 32px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
+    left: -800px;
+}
+  </style>
+
+  <!-- -------------------------fin de ce que j'ai inséré  ------------------- -->
+  <!-- Site Icons -->
+  <link rel="shortcut icon" href="#" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="#" />
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+  <!-- Pogo Slider CSS -->
+  <link rel="stylesheet" href="css/pogo-slider.min.css" />
+  <!-- Site CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+  <!-- Responsive CSS -->
+  <link rel="stylesheet" href="css/responsive.css" />
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/custom.css" />
+
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body id="about" class="inner_page" data-spy="scroll" data-target="#navbar-wd" data-offset="98">
+
+  <!-- LOADER -->
+  <div id="preloader">
+    <div class="loader">
+      <img src="images/loader.gif" alt="#" />
+    </div>
+  </div>
+  <!-- end loader -->
+  <!-- END LOADER -->
+
+  <!-- Start header -->
+  <header class="top-header">
+    <nav class="navbar header-nav navbar-expand-lg">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="index.html"><img src="img/logo.png" alt="image"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-wd"
+          aria-controls="navbar-wd" aria-expanded="false" aria-label="Toggle navigation">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbar-wd">
+          <ul class="navbar-nav">
+            <li><a class="nav-link active" href="index.html">Accueil</a></li>
+            <li><a class="nav-link" href="Maroc.html">Maroc</a></li>
+            <li><a class="nav-link" href="Nord_Afrique.html">Nord d'afrique</a></li>
+            <li><a class="nav-link" href="Vis_dyn.html">Carte a une vis-dyn</a></li>
+            <li><a class="nav-link" href="Carte 3d.html">Carte 3D</a></li>
+            <li><a class="nav-link" style="background:#f2184f;color:#fff;" href="contact.html">Contact us</a></li>
+
+            </li>
+          </ul>
+        </div>
+        <div class="search-box">
+          <input type="text" class="search-txt" placeholder="Search">
+          <a class="search-btn">
+            <img src="images/search_icon.png" alt="#" />
+          </a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <!-- End header -->
+
+
+  <!-- section -->
+  <div class="section dark_bg">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-6 col-md-12 text_align_center padding_0">
+          <div class="full">
+            <img class="img-responsive" style="height: 500px;width: 800px;" src="img/img-2png.png" alt="#" />
+          </div>
+        </div>
+
+        <div class="col-lg-6 col-md-12 white_fonts layout_padding padding_left_right">
+          <h3 class="small_heading">La cartographie<br> de l'indice d'aridité au niveau des 12 régions du Maroc</h3>
+          <p>la carte contient : </p>
+          <p>- Des graphes dynamiques : présentent des données statistiques de l'indice d'aridité dans les
+            périodes de 2012 à 2019 dans les différentes régions.</p>
+          <p>- Une carte choroplèthe au fond représente le type de climat en se basant sur la moyenne des indices d'aridités entre 2012 et 2019 </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end section -->
+
+
+  <!-- section -->
+  <div class="section layout_padding">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="full">
+            <div class="heading_main text_align_left">
+
+              <div class="right">
+                <p class="small_tag">Carte avec une visualisation dynamique & Graphes statistiques</p>
+                <h2><span class="theme_color">Régions du Maroc</span> </h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end section -->
+
+  
+  <script type="text/javascript", src = "3djs/regions.js"></script>
+  <div id="mapid" style="height: 800px;width: 1200px;margin: 0 auto;margin-bottom: 10px;"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.2.3/leaflet.draw.js" > </script >
+  <!-- shapefile region du maroc -->
+  <script>
+     
+    //base map
+    //1
+    var dark = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+    var darkAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
+    var dark2 = new L.TileLayer(dark, { minZoom: 0, maxZoom: 13, darkAttrib });
+    //2
+    var Stamen_Toner = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}{r}.{ext}', {
+      attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      subdomains: 'abcd',
+      minZoom: 0,
+      maxZoom: 20,
+      ext: 'png'
+    });
+    //3
+    var OpenTopoMap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+      maxZoom: 17,
+      attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+    });
+    
+
+    // basemaps
+    var baseMaps = [
+      {
+        groupName: "CartoDB",
+        expanded: true,
+        layers: {
+          "DarkMatter": dark2,
+        }
+      }, {
+        groupName: "OSM Base Maps",
+        layers: {
+          "OpenStreetMaps": OpenTopoMap
+        }
+      }, {
+        groupName: "Stamen",
+        layers: {
+          "Stamen Toner": Stamen_Toner
+        }
+      }
+    ];
+    // options
+    var options = {
+      container_width: "300px",
+      group_maxHeight: "80px",
+      //container_maxHeight : "350px", 
+      exclusive: false,
+      collapsed: true,
+      position: 'topright'
+      
+    };
+    // overlays
+    var overlays = [
+      {
+        groupName: "Maroc",
+        expanded: true,
+        layers: {
+          "Region Du Maroc": regions,
+
+        }
+      }
+    ];
+
+    
+    var mymap = L.map('mapid', {
+      center: new L.LatLng(28.8, -7),
+      zoom: 6,
+      layers: [dark2],
+      fullscreenControl: true,
+      fullscreenControlOptions: { // optional
+        title:"Show me the fullscreen !",
+        titleCancel:"Exit fullscreen mode"}
+    });
+    // add shapefile
+    var regions = L.geoJSON(regions, {
+      style: style,
+      onEachFeature: onEachFeature,
+    })
+    .addTo(mymap)
+    .bindPopup(chart);
+    
+
+    
+    
+    // add nav bar
+    L.control.navbar().addTo(mymap);
+    
+   
+      
+          
+          // detect fullscreen toggling
+          mymap.on('enterFullscreen', function(){
+            if(window.console) window.console.log('enterFullscreen');
+          });
+          mymap.on('exitFullscreen', function(){
+            if(window.console) window.console.log('exitFullscreen');
+          });
+    
+    
+    // add control ruler
+      L.control.ruler().addTo(mymap);
+
+      // Initialise the FeatureGroup to store editable layers
+  var drawnItems = new L.FeatureGroup();
+  mymap.addLayer(drawnItems);
+  // Initialise the draw control and pass it the FeatureGroup of editable layers
+  var drawControl = new L.Control.Draw({
+    edit: {
+    featureGroup: drawnItems
+  }
+  });
+  mymap.addControl(drawControl);
+  mymap.on('draw:created', function (e) {
+  var type = e.layerType,
+    layer = e.layer;
+    if (type === 'marker') {
+    layer.bindPopup('A popup!');
+  }
+  drawnItems.addLayer(layer);
+  });
+    
+    // add control mouse
+    L.control.mousePosition().addTo(mymap);
+    // minimap
+    // base map
+    var osmUrl = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+    var osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
+
+    //Plugin magic goes here! Note that you cannot use the same layer object again, as that will confuse the two map controls
+    var osm2 = new L.TileLayer(osmUrl, { minZoom: 0, maxZoom: 13, osmAttrib });
+    var miniMap = new L.Control.MiniMap(osm2, { toggleDisplay: true }).addTo(mymap);
+    // add scale bar
+    L.control.betterscale({ metric: true, position: 'bottomleft'} ).addTo(mymap);
+    
+
+    
+    
+    
+    function chart(d) {
+      var feature = d.feature;
+      var data = feature.properties.data;
+      
+      var width = 300;
+      var height = 80;
+      var margin = {left:20,right:15,top:40,bottom:40};
+      var parse = d3.timeParse("%Y") ; // il faut les régler
+      var format = d3.timeFormat("%Y");
+       
+      var div = d3.create("div")
+      var svg = div.append("svg")
+        .attr("width", width+margin.left+margin.right)
+        .attr("height", height+margin.top+margin.bottom);
+      var g = svg.append("g")
+        .attr("transform","translate("+[margin.left,margin.top]+")");
+        
+      var y = d3.scaleLinear()
+        .domain([0, d3.max(data, function(d) { return d; }) ])
+        .range([height,0]);
+        
+      var yAxis = d3.axisLeft()
+        .ticks(4)
+        .scale(y);
+      g.append("g").call(yAxis);
+        
+      var x = d3.scaleBand()
+        .domain(d3.range(8))
+        .range([0,width]);
+        
+      var xAxis = d3.axisBottom()
+        .scale(x)
+        .tickFormat(function(d) { return format(parse(d+2012)); });
+        
+      g.append("g")
+          .attr("transform", "translate(0," + height + ")")
+          .call(xAxis)
+          .selectAll("text")
+          .attr("text-anchor","end")
+          .attr("transform","rotate(-90)translate(-12,-15)")
+        
+      var rects = g.selectAll("rect")
+        .data(data)
+        .enter()
+        .append("rect")
+        .attr("y",height)
+        .attr("height",0)
+        .attr("width", x.bandwidth()-2 )
+        .attr("x", function(d,i) { return x(i); })
+        .attr("fill","steelblue")
+        .transition()
+        .attr("height", function(d) { return height-y(d); })
+        .attr("y", function(d) { return y(d); })
+        .duration(1000);
+        
+      var title = svg.append("text")
+        .style("font-size", "10px")
+        .text(feature.properties.title)
+        .attr("x", width/2 + margin.left)
+        .attr("y", 30)
+        .attr("text-anchor","middle");
+        
+      return div.node();
+        
+    }  
+    
+    // style 
+    
+    function style(feature) {
+            return {
+              weight: 1,
+              opacity: 1,
+              color: 'white',
+              dashArray: '3',
+              fillOpacity: 0.65,
+              fillColor: "#ecf0f1"
+            };
+          }
+    
+    // mouseover
+    function getColor(Attribut) {
+              return Attribut > 40 & Attribut <= 55 ? '#253494' :
+                Attribut > 20 & Attribut <= 40 ? '#2c7fb8' :
+                  Attribut > 10 & Attribut <= 20 ? '#41b6c4' :
+                  Attribut > 5 & Attribut <= 10 ? '#c7e9b4' :
+                  Attribut > 0 & Attribut <= 5 ? '#ffffcc' :
+                    '';
+            }
+          
+            function style(feature) {
+              return {
+                weight: 2,
+                opacity: 1,
+                color: 'black',
+                dashArray: '3',
+                fillOpacity: 1,
+                fillColor: getColor(feature.properties.Indice_Aridite)
+              };
+            }
+    function highlightFeature(e) {
+
+
+          var layer = e.target;
+    
+          layer.setStyle({
+            weight: 5,
+            color: "#666",
+            dashArray: "",
+            fillOpacity: 0.9
+          });
+          
+          if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+            layer.bringToFront();
+          }
+    
+          info.update(layer.feature.properties);
+          
+    }
+    
+    
+    // mouseout
+    function resetHighlight(e) {
+          regions.resetStyle(e.target);
+          regions.closePopup();
+          info.update();
+          
+    }
+    
+        function onEachFeature(feature, layer) {
+          layer.on({
+            mouseover: highlightFeature,
+            mouseout: resetHighlight
+          });
+        }
+    
+    // display information
+    
+    var info = L.control();
+    
+          info.onAdd = function (map) {
+            this._div = L.DomUtil.create('div', 'info');
+            this.update();
+            return this._div;
+          };
+    
+    
+    info.update = function (props) {
+            this._div.innerHTML = '<h4 style="color:#2E3513!important;">Indice d`Aridité </h4>' +  (props ?
+              '<b>' + props.Indice_Aridite + '</b><br />' 
+              : ' Glissez la souris et cliquez sur la région pour afficher le graphe');
+          };
+    
+    info.addTo(mymap);
+          
+    var legend = L.control({position: 'bottomleft'});
+          
+          legend.onAdd = function (mymap) {
+          
+              var div = L.DomUtil.create('div', 'info legend'),
+                  grades = [0, 5, 10, 20, 40,55],
+                  grades1 = ['Hyper-Aride', 'Aride', 'Semi-Aride', 'Semi-Humide','Humide'],
+                  labels = [];
+          
+              // loop through our density intervals and generate a label with a colored square for each interval
+              div.innerHTML += '<h4>Type de climat</h4>';
+              for (var i = 0; i < grades.length; i++) {
+                  div.innerHTML += 
+                      '<i style="background:' + getColor(grades[i]+1) + '"></i> ' + 
+                       (grades1[i] ? '&ndash;' + grades1[i] + '<br>' : '');
+              }
+          
+              return div;
+          };
+          legend.addTo(mymap);
+    
+
+    // add layer group
+    var control = L.Control.styledLayerControl(baseMaps, overlays, options);
+    mymap.addControl(control);
+    
+        
+    </script>
+
+  <!---------------------------- Fin de la carte ----------------------------->
+  <!-- Start Footer -->
+  <footer class="footer-box">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 margin-bottom_30">
+          <img src="img/f_logo.png" alt="#" style="height: 80px;width: 80px" />
+        </div>
+        <div class="col-xl-6 white_fonts">
+          <div class="row">
+            <div class="col-md-12 white_fonts margin-bottom_30">
+              <h3>Contactez-nous</h3>
+            </div>
+            <div class="col-md-4">
+              <div class="full icon">
+                <img src="images/social1.png">
+              </div>
+              <div class="full white_fonts">
+                <p>Madinat Al Irfan
+                  <br>Rabat, Maroc</p>
+              </div>
+            </div>
+            <div class="col-md-5">
+              <div class="full icon">
+                <img src="images/social2.png">
+              </div>
+              <div class="full white_fonts">
+                <p>Ab.menichi@gmail.com
+                  <br>youssef.ahfi@gmail.com </p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="full icon">
+                <img src="images/social3.png">
+              </div>
+              <div class="full white_fonts">
+                <p>+212659034168
+                  <br>+212636814889</p>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <ul class="full social_icon margin-top_20">
+                <li><a href="https://web.facebook.com/IAV.HASSANII.IAV"><i class="fa fa-facebook-f"></i></a></li>
+                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                <li><a href="https://www.linkedin.com/school/iavhassan/"><i class="fa fa-linkedin"></i></a></li>
+                <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-6 white_fonts">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="footer_blog footer_menu">
+                <h3>Menus</h3>
+                <ul>
+                  <li><a href="Maroc.html">Maroc</a></li>
+                  <li><a href="Nord_Afrique.html">Nord d'afrique</a></li>
+                  <li><a href="Carte 3d.html">Carte 3D</a></li>
+                  <li><a href="https://www.youtube.com/watch?v=t9f39nukKBY">Blog</a></li>
+                  <li><a href="contact.html">Contactez-nous</a></li>
+                </ul>
+              </div>
+              <div class="footer_blog recent_post_footer">
+                <h3>Note</h3>
+                <p>Comme suite au cours du web Mapping qui nous a été assuré lors de notre 3 ème année
+                  de CI (réf : année académique 2020-2021), nous réalisâmes un projet de WebMapping
+                </p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="footer_blog full">
+                <h3>Envoyez une lettre</h3>
+                <div class="newsletter_form">
+                  <form action="index.html">
+                    <input type="email" placeholder="Your Email" name="#" required />
+                    <button>Soumettre</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </footer>
+  <!-- End Footer -->
+
+  <div class="footer_bottom">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <p class="crp">© WebMapping 2020 . All Rights Reserved.</p>
+          <ul class="bottom_menu">
+            <li><a href="#">Encadré par:</a></li>
+            <li><a href="#">Pr. Hicham Hajji</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a href="#" id="scroll-to-top" class="hvr-radial-out"><i class="fa fa-angle-up"></i></a>
+
+  <!-- ALL JS FILES -->
+  <script src="js/jquery.min.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <!-- ALL PLUGINS -->
+  <script src="js/jquery.magnific-popup.min.js"></script>
+  <script src="js/jquery.pogo-slider.min.js"></script>
+  <script src="js/slider-index.js"></script>
+  <script src="js/smoothscroll.js"></script>
+  <script src="js/form-validator.min.js"></script>
+  <script src="js/contact-form-script.js"></script>
+  <script src="js/isotope.min.js"></script>
+  <script src="js/images-loded.min.js"></script>
+  <script src="js/custom.js"></script>
+  <script>
+    /* counter js */
+
+    (function ($) {
+      $.fn.countTo = function (options) {
+        options = options || {};
+
+        return $(this).each(function () {
+          // set options for current element
+          var settings = $.extend({}, $.fn.countTo.defaults, {
+            from: $(this).data('from'),
+            to: $(this).data('to'),
+            speed: $(this).data('speed'),
+            refreshInterval: $(this).data('refresh-interval'),
+            decimals: $(this).data('decimals')
+          }, options);
+
+          // how many times to update the value, and how much to increment the value on each update
+          var loops = Math.ceil(settings.speed / settings.refreshInterval),
+            increment = (settings.to - settings.from) / loops;
+
+          // references & variables that will change with each update
+          var self = this,
+            $self = $(this),
+            loopCount = 0,
+            value = settings.from,
+            data = $self.data('countTo') || {};
+
+          $self.data('countTo', data);
+
+          // if an existing interval can be found, clear it first
+          if (data.interval) {
+            clearInterval(data.interval);
+          }
+          data.interval = setInterval(updateTimer, settings.refreshInterval);
+
+          // initialize the element with the starting value
+          render(value);
+
+          function updateTimer() {
+            value += increment;
+            loopCount++;
+
+            render(value);
+
+            if (typeof (settings.onUpdate) == 'function') {
+              settings.onUpdate.call(self, value);
+            }
+
+            if (loopCount >= loops) {
+              // remove the interval
+              $self.removeData('countTo');
+              clearInterval(data.interval);
+              value = settings.to;
+
+              if (typeof (settings.onComplete) == 'function') {
+                settings.onComplete.call(self, value);
+              }
+            }
+          }
+
+          function render(value) {
+            var formattedValue = settings.formatter.call(self, value, settings);
+            $self.html(formattedValue);
+          }
+        });
+      };
+
+      $.fn.countTo.defaults = {
+        from: 0,               // the number the element should start at
+        to: 0,                 // the number the element should end at
+        speed: 1000,           // how long it should take to count between the target numbers
+        refreshInterval: 100,  // how often the element should be updated
+        decimals: 0,           // the number of decimal places to show
+        formatter: formatter,  // handler for formatting the value before rendering
+        onUpdate: null,        // callback method for every time the element is updated
+        onComplete: null       // callback method for when the element finishes updating
+      };
+
+      function formatter(value, settings) {
+        return value.toFixed(settings.decimals);
+      }
+    }(jQuery));
+
+    jQuery(function ($) {
+      // custom formatting example
+      $('.count-number').data('countToOptions', {
+        formatter: function (value, options) {
+          return value.toFixed(options.decimals).replace(/\B(?=(?:\d{3})+(?!\d))/g, ',');
+        }
+      });
+
+      // start all the timers
+      $('.timer').each(count);
+
+      function count(options) {
+        var $this = $(this);
+        options = $.extend({}, options || {}, $this.data('countToOptions') || {});
+        $this.countTo(options);
+      }
+    });
+  </script>
+</body>
+
+</html>

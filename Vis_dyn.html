@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Basic -->
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <!-- Site Metas -->
+  <title>Carte dynamique</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <!-- -------------------------j'ai inséré ici ------------------- -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.2.3/leaflet.draw.css"/>
+
+  <!-- plugin area zoom -->
+  <link rel="stylesheet" href="Nord_afrique/L.Control.ZoomBox.css" />
+  <!-- load plugin full screen -->
+  <link rel="stylesheet" href="Nord_afrique/Control.FullScreen.css" />
+  <script src="Nord_afrique/Control.FullScreen.js"></script>
+  <!-- load plugin scale bar -->
+  <link rel="stylesheet" href="Nord_afrique/L.Control.BetterScale.css" />
+  <script src="Nord_afrique/L.Control.BetterScale.js"></script>
+  <!-- load plugin control mouse -->
+  <link rel="stylesheet" href="Nord_afrique/L.Control.MousePosition.css" />
+  <script src="Nord_afrique/L.Control.MousePosition.js"></script>
+  <!-- load plugin navigate bar -->
+  <link rel="stylesheet" href="Nord_afrique/Leaflet.NavBar.css" />
+  <script src="Nord_afrique/Leaflet.NavBar.js"></script>
+  <!-- load plugin minimap -->
+  <link rel="stylesheet" href="Nord_afrique/src/Control.MiniMap.css" />
+  <script src="Nord_afrique/src/Control.MiniMap.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+
+  <!-- layer group -->
+  <link rel="stylesheet" href="Nord_afrique/styledLayerControl.css" />
+  <script src="Nord_afrique/styledLayerControl.js"></script>
+
+  <!-- timeline -->
+  <script src="Nord_afrique/leaflet.timeline.js"></script>
+  <link rel="stylesheet" href="Nord_afrique/leaflet.timeline.css" />
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    #map {
+      width: 100vw;
+      height: 100vh;
+    }
+    
+    .custom-content svg{
+      height:22px;
+      width:22px;
+      padding-top:4px;
+      position:relative;
+    }
+    .custom-content.active::before{
+      content: "+";
+      font-weight: bold;
+      color: black;
+      position: absolute;
+      text-align: center;
+      width: 20px;
+      font-size: 22px;
+    }
+    .info { padding: 6px 8px; font: 14px/16px Arial, Helvetica, sans-serif; background: rgb(167, 51, 51); background: rgba(255,255,255,0.8); box-shadow: 0 0 15px rgba(0,0,0,0.2); border-radius: 5px; } .info h4 { margin: 0 0 5px; color: #777; }
+    .legend {
+    line-height: 22px;
+    color: #555;
+  }
+    .legend i {
+    width: 32px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
+    left: -800px;
+  }
+</style>
+  </style>
+
+  <!-- -------------------------fin de ce que j'ai inséré  ------------------- -->
+  <!-- Site Icons -->
+  <link rel="shortcut icon" href="#" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="#" />
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+  <!-- Pogo Slider CSS -->
+  <link rel="stylesheet" href="css/pogo-slider.min.css" />
+  <!-- Site CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+  <!-- Responsive CSS -->
+  <link rel="stylesheet" href="css/responsive.css" />
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/custom.css" />
+
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body id="about" class="inner_page" data-spy="scroll" data-target="#navbar-wd" data-offset="98">
+
+  <!-- LOADER -->
+  <div id="preloader">
+    <div class="loader">
+      <img src="images/loader.gif" alt="#" />
+    </div>
+  </div>
+  <!-- end loader -->
+  <!-- END LOADER -->
+
+  <!-- Start header -->
+  <header class="top-header">
+    <nav class="navbar header-nav navbar-expand-lg">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="index.html"><img src="img/logo.png" alt="image"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-wd"
+          aria-controls="navbar-wd" aria-expanded="false" aria-label="Toggle navigation">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbar-wd">
+          <ul class="navbar-nav">
+            <li><a class="nav-link active" href="index.html">Accueil</a></li>
+            <li><a class="nav-link" href="Maroc.html">Maroc</a></li>
+            <li><a class="nav-link" href="Nord_Afrique.html">Nord d'afrique</a></li>
+            <li><a class="nav-link" href="Vis_dyn.html">Carte a une vis-dyn</a></li>
+            <li><a class="nav-link" href="Carte 3d.html">Carte 3D</a></li>
+            <li><a class="nav-link" style="background:#f2184f;color:#fff;" href="contact.html">Contact us</a></li>
+
+            </li>
+          </ul>
+        </div>
+        <div class="search-box">
+          <input type="text" class="search-txt" placeholder="Search">
+          <a class="search-btn">
+            <img src="images/search_icon.png" alt="#" />
+          </a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <!-- End header -->
+
+
+  <!-- section -->
+  <div class="section dark_bg">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-6 col-md-12 text_align_center padding_0">
+          <div class="full">
+            <img class="img-responsive" style="height: 500px;width: 800px;" src="img/img-2png.png" alt="#" />
+          </div>
+        </div>
+
+        <div class="col-lg-6 col-md-12 white_fonts layout_padding padding_left_right">
+          <h3 class="small_heading">La cartographie<br> de la perte des forêts par les incendies dans les 12 régions du Maroc</h3>
+          <p>la carte contient : </p>
+          <p>- Des symboles proportionnels dynamiques : présentent la perte des forêts par les incendies dans les
+            périodes de 2003 à 2019 dans les différentes régions.</p>
+          <p>- Une carte choroplèthe au fond représente la densité des populations au niveau régional</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end section -->
+
+
+  <!-- section -->
+  <div class="section layout_padding">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="full">
+            <div class="heading_main text_align_left">
+
+              <div class="right">
+                <p class="small_tag">Carte avec une visualisation dynamique</p>
+                <h2><span class="theme_color">Régions du Maroc</span> </h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end section -->
+
+  <script src="Nord_afrique/L.Control.ZoomBox.js"></script>
+  <div id="map" style="height: 950px;width: 1300px;margin: 0 auto;margin-bottom: 10px;"></div>
+  <!-- shapefile region du maroc -->
+  <script src="Nord_afrique/regions.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.2.3/leaflet.draw.js" > </script >
+  <script>
+    function getColorFor(str) {
+      // java String#hashCode
+      var hash = 0;
+      for (var i = 0; i < str.length; i++) {
+        hash = str.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      var red = (hash >> 24) & 0xff;
+      var grn = (hash >> 16) & 0xff;
+      var blu = (hash >> 8) & 0xff;
+      return "rgb(" + red + "," + grn + "," + blu + ")";
+    }
+    // base 1
+    var osmUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+    var osmAttrib =
+      '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+    var osm = L.tileLayer(osmUrl, { maxZoom: 18, attribution: osmAttrib });
+    //base map
+    //1
+    var dark = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+    var darkAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
+    var dark2 = new L.TileLayer(dark, { minZoom: 0, maxZoom: 13, darkAttrib });
+    //2
+    var Stamen_Toner = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}{r}.{ext}', {
+      attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      subdomains: 'abcd',
+      minZoom: 0,
+      maxZoom: 20,
+      ext: 'png'
+    });
+    //3
+    var OpenTopoMap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+      maxZoom: 17,
+      attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+    });
+    
+    // get color depending on population density value
+    function getColor(d) {
+      return d > 0.99909 ? '#08519c' :
+        d > 0.99824 ? '#3182bd' :
+          d > 0.99798 ? '#6baed6' :
+            d > 0.99605 ? '#bdd7e7' :
+              d > 0.99378 ? '#eff3ff' :
+                '#08519c';
+    }
+
+    function style(feature) {
+      return {
+        weight: 1,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.65,
+        fillColor: getColor(feature.properties.HabitMarPo)
+      };
+    }
+
+    function highlightFeature(e) {
+      var layer = e.target;
+
+      layer.setStyle({
+        weight: 2,
+        color: '#666',
+        dashArray: '',
+        fillOpacity: 0.9
+      });
+    }
+
+    function resetHighlight(e) {
+      regions.resetStyle(e.target);
+    }
+    function onEachFeature(feature, layer) {
+      layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight
+      });
+    }
+
+    var regions = L.geoJSON(regions, {
+      style: style,
+      onEachFeature: onEachFeature
+    })
+    // overlays
+    var overlays = [
+      {
+        groupName: "Maroc",
+        expanded: true,
+        layers: {
+          "Region Du Maroc": regions,
+
+        }
+      }
+    ];
+    var map = L.map("map", {
+      layers: [dark2, regions],
+      center: new L.LatLng(28.8, -12),
+      zoom: 6,
+      fullscreenControl: true,
+      fullscreenControlOptions: { // optional
+        title: "Show me the fullscreen !",
+        titleCancel: "Exit fullscreen mode"
+      }
+    });
+    // control that shows state info on hover
+    var info = L.control();
+
+    info.onAdd = function (map) {
+      this._div = L.DomUtil.create('div', 'info');
+      this.update();
+      return this._div;
+    };
+
+    info.update = function (props) {
+      this._div.innerHTML = '<h4 style="color:#2E3513!important;">PERTE DES FORET PAR LES INCENDIES AU MAROC</h4>' + (props ?
+        '<b>' + props.Nom_Region + '</b><br />' + props.PERTE_FORET + ' Hectar'
+        : 'Glissez la souris sur un cercle');
+    };
+
+    info.addTo(map);
+    // basemaps
+    var baseMaps = [
+      {
+        groupName: "CartoDB",
+        expanded: true,
+        layers: {
+          "DarkMatter": dark2,
+        }
+      }, {
+        groupName: "OSM Base Maps",
+        layers: {
+          "OpenStreetMaps": OpenTopoMap
+        }
+      }, {
+        groupName: "Stamen",
+        layers: {
+          "Stamen Toner": Stamen_Toner
+        }
+      }
+    ];
+    // options
+    var options = {
+      container_width: "300px",
+      group_maxHeight: "80px",
+      //container_maxHeight : "350px", 
+      exclusive: false,
+      collapsed: true,
+      position: 'topright'
+      
+    };
+
+    var control = L.Control.styledLayerControl(baseMaps, overlays, options);
+    map.addControl(control);
+    var timeline;
+    var timelineControl;
+
+    function zoomToFeature(e) {
+      map.fitBounds(e.target.getBounds());
+    }
+
+    function onLoadData(data) {
+      timeline = L.timeline(data, {
+
+        pointToLayer: function (feature, latlng) {
+          return L.circleMarker(latlng, {
+            weight: 8,
+            opacity: 0.15,
+            fillColor: '#e74c3c',
+            fillOpacity: 0.8,
+            stroke: true,
+            color: '#e74c3c',
+            radius: getRadius(feature.properties.PERTE_FORET)
+          });
+        },
+        waitToUpdateMap: true,
+        onEachFeature: function (feature, layer) {
+          layer.on('mouseover', function () {
+            layer.setStyle({
+              fillColor: '#e74c3c',
+              fillOpacity: 1
+            });
+            if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+              layer.bringToFront();
+            }
+            info.update(layer.feature.properties);
+          });
+          layer.on('mouseout', function () {
+            layer.setStyle({
+              fillColor: '#e74c3c',
+              weight: 8,
+              opacity: 0.5,
+              stroke: true,
+              color: '#000',
+              fillOpacity: 1
+            });
+            info.update();
+          });
+        }
+      });
+
+      timelineControl = L.timelineSliderControl({
+        position: 'bottomright',
+        formatOutput: function (date) {
+          return new Date(date).toLocaleDateString();
+        },
+        enableKeyboardControls: true,
+      });
+      timeline.addTo(map);
+      timelineControl.addTo(map);
+      timelineControl.addTimelines(timeline);
+      
+    }
+    function getRadius(covid) {
+      var radius = Math.sqrt(covid);
+      return radius;
+    };
+
+
+
+    // add zoom area
+    // Using a custom SVG icon as content
+    var control = L.control.zoomBox({
+      addToZoomControl: true,
+      modal: true,
+      className: "custom-content",
+      content: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><g transform="translate(0,0)"><path fill="rgba(0, 0, 0, 1)" d="M138.563 16.063C83.49 42.974 41.459 86.794 16.124 138.53l59.938 29.407c18.988-38.845 50.47-71.807 91.812-92l-29.313-59.874zm234.843.156L344 76.124c38.846 18.99 71.807 50.47 92 91.813l59.875-29.313c-26.913-55.073-70.732-97.073-122.47-122.406zm62.53 327.717c-18.982 38.865-50.53 71.673-91.873 91.875l29.437 60.125c55.116-26.925 97.085-70.76 122.375-122.562l-59.938-29.438zm-359.936.125l-60 29.375c26.928 55.097 70.776 97.082 122.563 122.375l29.406-59.937C129.122 416.885 96.192 385.4 76 344.062z"></path></g></svg>'
+    });
+    map.addControl(control);
+    // add nav bar
+    L.control.navbar().addTo(map);
+    // detect fullscreen toggling
+    map.on('enterFullscreen', function () {
+      if (window.console) window.console.log('enterFullscreen');
+    });
+    map.on('exitFullscreen', function () {
+      if (window.console) window.console.log('exitFullscreen');
+    });
+
+    // Initialise the FeatureGroup to store editable layers
+  var drawnItems = new L.FeatureGroup();
+  map.addLayer(drawnItems);
+  // Initialise the draw control and pass it the FeatureGroup of editable layers
+  var drawControl = new L.Control.Draw({
+    edit: {
+    featureGroup: drawnItems
+  }
+  });
+  map.addControl(drawControl);
+  map.on('draw:created', function (e) {
+  var type = e.layerType,
+    layer = e.layer;
+    if (type === 'marker') {
+    layer.bindPopup('A popup!');
+  }
+  drawnItems.addLayer(layer);
+  });
+    // add scale bar
+    L.control.betterscale({ metric: true, position: 'bottomleft' }).addTo(map);
+    // add control mouse
+    L.control.mousePosition().addTo(map);
+    // minimap
+    // base map
+    var osmUrl = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+    var osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
+
+    //Plugin magic goes here! Note that you cannot use the same layer object again, as that will confuse the two map controls
+    var osm2 = new L.TileLayer(osmUrl, { minZoom: 0, maxZoom: 13, osmAttrib });
+    var miniMap = new L.Control.MiniMap(osm2, { toggleDisplay: true }).addTo(map);
+
+    //legend
+    var legend = L.control({ position: 'bottomleft' });
+
+    legend.onAdd = function (map) {
+
+      var div = L.DomUtil.create('div', 'info legend'),
+        grades = [0.9938, 0.9961, 0.9980, 0.9982, 0.9991],
+        labels = [];
+        
+      div.innerHTML = '<div><h3 style="font-weight:bolder;font-size:larger;">Densité de population </h3>';
+
+      for (var i = 0; i < grades.length; i++) {
+        
+        div.innerHTML += '<i style="background:' + getColor(grades[i]) + '"></i> ' +
+          grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] : '+') + "<br/>"; 
+      }
+      return div;
+    };
+
+
+    legend.addTo(map);
+
+  </script>
+
+
+
+  <script src="Nord_afrique/mar_cent.jsonp"></script>
+  <!--<script src="./region2.jsonp"></script>-->
+
+  <!---------------------------- Fin de la carte ----------------------------->
+  <!-- Start Footer -->
+  <footer class="footer-box">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 margin-bottom_30">
+          <img src="img/f_logo.png" alt="#" style="height: 80px;width: 80px" />
+        </div>
+        <div class="col-xl-6 white_fonts">
+          <div class="row">
+            <div class="col-md-12 white_fonts margin-bottom_30">
+              <h3>Contactez-nous</h3>
+            </div>
+            <div class="col-md-4">
+              <div class="full icon">
+                <img src="images/social1.png">
+              </div>
+              <div class="full white_fonts">
+                <p>Madinat Al Irfan
+                  <br>Rabat, Maroc</p>
+              </div>
+            </div>
+            <div class="col-md-5">
+              <div class="full icon">
+                <img src="images/social2.png">
+              </div>
+              <div class="full white_fonts">
+                <p>Ab.menichi@gmail.com
+                  <br>youssef.ahfi@gmail.com </p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="full icon">
+                <img src="images/social3.png">
+              </div>
+              <div class="full white_fonts">
+                <p>+212659034168
+                  <br>+212636814889</p>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <ul class="full social_icon margin-top_20">
+                <li><a href="https://web.facebook.com/IAV.HASSANII.IAV"><i class="fa fa-facebook-f"></i></a></li>
+                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                <li><a href="https://www.linkedin.com/school/iavhassan/"><i class="fa fa-linkedin"></i></a></li>
+                <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-6 white_fonts">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="footer_blog footer_menu">
+                <h3>Menus</h3>
+                <ul>
+                  <li><a href="Maroc.html">Maroc</a></li>
+                  <li><a href="Nord_Afrique.html">Nord d'afrique</a></li>
+                  <li><a href="Carte 3d.html">Carte 3D</a></li>
+                  <li><a href="https://www.youtube.com/watch?v=t9f39nukKBY">Blog</a></li>
+                  <li><a href="contact.html">Contactez-nous</a></li>
+                </ul>
+              </div>
+              <div class="footer_blog recent_post_footer">
+                <h3>Note</h3>
+                <p>Comme suite au cours du web Mapping qui nous a été assuré lors de notre 3 ème année
+                  de CI (réf : année académique 2020-2021), nous réalisâmes un projet de WebMapping
+                </p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="footer_blog full">
+                <h3>Envoyez une lettre</h3>
+                <div class="newsletter_form">
+                  <form action="index.html">
+                    <input type="email" placeholder="Your Email" name="#" required />
+                    <button>Soumettre</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </footer>
+  <!-- End Footer -->
+
+  <div class="footer_bottom">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <p class="crp">© WebMapping 2020 . All Rights Reserved.</p>
+          <ul class="bottom_menu">
+            <li><a href="#">Encadré par:</a></li>
+            <li><a href="#">Pr. Hicham Hajji</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a href="#" id="scroll-to-top" class="hvr-radial-out"><i class="fa fa-angle-up"></i></a>
+
+  <!-- ALL JS FILES -->
+  <script src="js/jquery.min.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <!-- ALL PLUGINS -->
+  <script src="js/jquery.magnific-popup.min.js"></script>
+  <script src="js/jquery.pogo-slider.min.js"></script>
+  <script src="js/slider-index.js"></script>
+  <script src="js/smoothscroll.js"></script>
+  <script src="js/form-validator.min.js"></script>
+  <script src="js/contact-form-script.js"></script>
+  <script src="js/isotope.min.js"></script>
+  <script src="js/images-loded.min.js"></script>
+  <script src="js/custom.js"></script>
+  <script>
+    /* counter js */
+
+    (function ($) {
+      $.fn.countTo = function (options) {
+        options = options || {};
+
+        return $(this).each(function () {
+          // set options for current element
+          var settings = $.extend({}, $.fn.countTo.defaults, {
+            from: $(this).data('from'),
+            to: $(this).data('to'),
+            speed: $(this).data('speed'),
+            refreshInterval: $(this).data('refresh-interval'),
+            decimals: $(this).data('decimals')
+          }, options);
+
+          // how many times to update the value, and how much to increment the value on each update
+          var loops = Math.ceil(settings.speed / settings.refreshInterval),
+            increment = (settings.to - settings.from) / loops;
+
+          // references & variables that will change with each update
+          var self = this,
+            $self = $(this),
+            loopCount = 0,
+            value = settings.from,
+            data = $self.data('countTo') || {};
+
+          $self.data('countTo', data);
+
+          // if an existing interval can be found, clear it first
+          if (data.interval) {
+            clearInterval(data.interval);
+          }
+          data.interval = setInterval(updateTimer, settings.refreshInterval);
+
+          // initialize the element with the starting value
+          render(value);
+
+          function updateTimer() {
+            value += increment;
+            loopCount++;
+
+            render(value);
+
+            if (typeof (settings.onUpdate) == 'function') {
+              settings.onUpdate.call(self, value);
+            }
+
+            if (loopCount >= loops) {
+              // remove the interval
+              $self.removeData('countTo');
+              clearInterval(data.interval);
+              value = settings.to;
+
+              if (typeof (settings.onComplete) == 'function') {
+                settings.onComplete.call(self, value);
+              }
+            }
+          }
+
+          function render(value) {
+            var formattedValue = settings.formatter.call(self, value, settings);
+            $self.html(formattedValue);
+          }
+        });
+      };
+
+      $.fn.countTo.defaults = {
+        from: 0,               // the number the element should start at
+        to: 0,                 // the number the element should end at
+        speed: 1000,           // how long it should take to count between the target numbers
+        refreshInterval: 100,  // how often the element should be updated
+        decimals: 0,           // the number of decimal places to show
+        formatter: formatter,  // handler for formatting the value before rendering
+        onUpdate: null,        // callback method for every time the element is updated
+        onComplete: null       // callback method for when the element finishes updating
+      };
+
+      function formatter(value, settings) {
+        return value.toFixed(settings.decimals);
+      }
+    }(jQuery));
+
+    jQuery(function ($) {
+      // custom formatting example
+      $('.count-number').data('countToOptions', {
+        formatter: function (value, options) {
+          return value.toFixed(options.decimals).replace(/\B(?=(?:\d{3})+(?!\d))/g, ',');
+        }
+      });
+
+      // start all the timers
+      $('.timer').each(count);
+
+      function count(options) {
+        var $this = $(this);
+        options = $.extend({}, options || {}, $this.data('countToOptions') || {});
+        $this.countTo(options);
+      }
+    });
+  </script>
+</body>
+
+</html>

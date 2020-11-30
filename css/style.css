@@ -339,7 +339,7 @@ button:focus {
     z-index: 20;
     background-position: left;
     background-repeat: no-repeat;
-    background: white;
+    background: #fff;
     background-size: auto 100%;
 }
 
